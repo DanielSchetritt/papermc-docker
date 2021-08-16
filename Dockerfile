@@ -11,6 +11,7 @@ ADD papermc.sh .
 RUN apt-get update \
     && apt-get install -y wget \
     && apt-get install -y jq \
+    && apt-get install -y nfs-common \
     && rm -rf /var/lib/apt/lists/* \
     && mkdir /papermc
 

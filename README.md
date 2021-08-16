@@ -22,6 +22,7 @@ There are several command line options that users may want to specify when utili
 - Volume
   - Set this to a name for the server's Docker volume (defaults to randomized gibberish).
   - Alternatively, set this to a path to a folder on your computer.
+  - If you want to use NFS for the server's Docker volume, [read this first](#using-nfs-for-the-docker-volume).
   - `-v <my_volume_name>:/papermc`
   - `-v </path/to/files>:/papermc`
 - Detached
@@ -69,6 +70,25 @@ Environment variables are options that are specified in the format `-e <NAME>="<
   - Set to any additional Java command line options that you would like to include.
   - By default, this environment variable is set to the empty string.
   - `-e JAVA_OPTS="<-XX:+UseConcMarkSweepGC -XX:+UseParNewGC>"`
+
+### Using NFS for the Docker volume
+
+**ADVANCED USERS ONLY**
+
+You can use an existing network file system for the Docker volume. To do this, you need to create the NFS docker volume first.
+Here's a sample adapted from the [Docker documentation](https://docs.docker.com/engine/reference/commandline/volume_create/#driver-specific-options):
+
+```bash
+docker volume create --driver local \
+    --opt type=nfs \
+    --opt o=addr=<192.168.1.1>,rw \
+    --opt device:</path/on/nfs/server/to/mount> \
+    <my_volume_name>
+```
+(You might need to run this with `sudo`)
+
+Once created, attach the volume to the container by running the [command](#command) with the `-v <my_volume_name>:/papermc` option. The name `<my_volume_name>` _must be the same_ as the volume you just created.
+
 ## Further Setup
 From this point, the server should be configured in the same way as any other Minecraft server. The server's files, including `server.properties`, can be found in the volume that was specified earlier. The port that was specified earlier will probably need to be forwarded as well. For details on how to do this and other such configuration, Google it, because it works the same as any other Minecraft server.
 # Technical
