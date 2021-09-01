@@ -44,4 +44,4 @@ if [[
 fi
 
 # Run command in tmux session.
-exec tmux new -As "$TMUX_SESSION" "$cmd"
+exec tmux new -f /etc/tmux.conf -As "$TMUX_SESSION" "$cmd"
